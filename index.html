@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mainApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngularJS Multi-Feature App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+    <script src="app.js"></script>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+     <style>
+        /* input {
+    display: block;
+    width: 70%;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 50%;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+} */
+    .completed {
+    text-decoration: line-through;
+    color: gray;
+}
+
+     </style> 
+</head>
+<body>
+
+    <div class="nav" style="margin-top:5px;background: #007bff;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* position: fixed;  */
+    width: 95%;
+    top: 0;
+    left: 0; justify-content: space-between;
+    z-index: 1000;">
+    <!-- Navigation Bar -->
+    <nav>
+        <a href="#!/">Home</a>
+        <a href="#!/todo">To-Do List</a>
+        <a href="#!/users">User List</a>
+        <!-- <a href="#!/login">Login</a> -->
+        <a href="#!/crud">User Management</a>
+    </nav>
+    </div>
+    <div class="container">
+    <!-- Dynamic View Loading -->
+    <div ng-view></div>
+
+    <script type="text/ng-template" id="home.html">
+        <h2>Welcome to AngularJS Multi-Feature App</h2>
+
+    </script>
+
+    <script type="text/ng-template" id="todo.html">
+        <h2>To-Do List</h2>
+        <input type="text" ng-model="newTask" placeholder="Add a task">
+        <button ng-click="addTask()">Add</button>
+        <ul>
+            <li ng-repeat="task in tasks">
+                <input type="checkbox" ng-model="task.done" ng-change="toggleTask(task)">
+                <span ng-class="{'completed': task.done}">{{task.name}}</span>
+                <button ng-click="deleteTask($index)">Delete</button>
+            </li>
+        </ul>
+    </script>
+    
+
+    <!-- User List in Table -->
+    <script type="text/ng-template" id="users.html">
+        <h2>User List</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in users">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </script>
+    
+
+    <!-- Login Page -->
+    <script type="text/ng-template" id="login.html">
+        <h2>Login</h2>
+        <form ng-submit="login()" novalidate>
+            <input type="email" ng-model="user.email" placeholder="Email" required>
+            <input type="password" ng-model="user.password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </script>
+
+    <!-- User Management -->
+     
+    <script type="text/ng-template" id="crud.html">
+        <div ng-controller="UserController">
+            <h2>User Management</h2>
+        
+            <input type="text" ng-model="newUser.name" placeholder="Enter name">
+            <input type="email" ng-model="newUser.email" placeholder="Enter email">
+            <button ng-click="addUser()">Add</button>
+        
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in users">
+                        <td>
+                            <span ng-if="!user.editing">{{ user.name }}</span>
+                            <input ng-if="user.editing" ng-model="user.name">
+                        </td>
+                        <td>
+                            <span ng-if="!user.editing">{{ user.email }}</span>
+                            <input ng-if="user.editing" ng-model="user.email">
+                        </td>
+                        <td>
+                            <button ng-click="editUser(user)" ng-if="!user.editing">Edit</button>
+                            <button ng-click="saveUser(user)" ng-if="user.editing">Save</button>
+                            <button ng-click="removeUser(user.id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </script>
+</div>
+</body>
+</html>
